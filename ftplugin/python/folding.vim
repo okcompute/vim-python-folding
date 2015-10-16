@@ -94,6 +94,12 @@ endfunction
 "}}}
 
 function! s:set_folding() "{{{
+    if &l:foldmethod == 'diff'
+        return
+    endif
+    if &l:foldmethod == 'expr'
+        return
+    endif
     setlocal foldmethod=expr
     setlocal foldexpr=g:python_folding_expr(v:lnum)
     setlocal foldtext=g:python_folding_text()
