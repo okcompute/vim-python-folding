@@ -19,7 +19,7 @@ endif
 
 " folding 'text' function. Defines what text will be displayed on the folded
 " line. {{{
-function! g:python_folding_text()
+function! s:python_folding_text()
     let fs = v:foldstart
     while getline(fs) !~ s:def_regex
         let fs = nextnonblank(fs + 1)
@@ -43,7 +43,7 @@ endfunction
 "}}}
 
 " Folding 'expr' method. This defines how to fold inside the file. {{{
-function! g:python_folding_expr(lnum)
+function! s:python_folding_expr(lnum)
 
     let line = getline(a:lnum)
     let indent = indent(a:lnum)
@@ -101,8 +101,8 @@ function! s:set_folding() "{{{
         return
     endif
     setlocal foldmethod=expr
-    setlocal foldexpr=g:python_folding_expr(v:lnum)
-    setlocal foldtext=g:python_folding_text()
+    setlocal foldexpr=s:python_folding_expr(v:lnum)
+    setlocal foldtext=s:python_folding_text()
 endfunction "}}}
 
 autocmd BufEnter *.py call s:set_folding()
