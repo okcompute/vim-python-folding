@@ -3,6 +3,10 @@
 " Location: ftplugin/python/folding.vim
 " Author: Pascal Lalancette (okcompute@icloud.com)
 
+if exists("b:ftplugin_python_loaded")
+  finish
+endif
+let b:ftplugin_python_loaded = 1
 
 " Patterns {{{
 let s:def_regex =  '^\s*\%(class\|def\) \w\+'
@@ -19,7 +23,7 @@ endif
 
 " folding 'text' function. Defines what text will be displayed on the folded
 " line. {{{
-function! s:python_folding_text()
+function! Python_folding_text()
     let fs = v:foldstart
     while getline(fs) !~ s:def_regex
         let fs = nextnonblank(fs + 1)
@@ -43,7 +47,7 @@ endfunction
 "}}}
 
 " Folding 'expr' method. This defines how to fold inside the file. {{{
-function! s:python_folding_expr(lnum)
+function! Python_folding_expr(lnum)
 
     let line = getline(a:lnum)
     let indent = indent(a:lnum)
@@ -93,16 +97,7 @@ function! s:python_folding_expr(lnum)
 endfunction
 "}}}
 
-function! s:set_folding() "{{{
-    if &l:foldmethod == 'diff'
-        return
-    endif
-    if &l:foldmethod == 'expr'
-        return
-    endif
-    setlocal foldmethod=expr
-    setlocal foldexpr=s:python_folding_expr(v:lnum)
-    setlocal foldtext=s:python_folding_text()
-endfunction "}}}
-
-autocmd BufEnter *.py call s:set_folding()
+setlocal foldmethod=expr
+let python_folding = 1
+setlocal foldexpr=Python_folding_expr(v:lnum)
+setlocal foldtext=Python_folding_text()
